@@ -10,12 +10,6 @@ public class CubeController : MonoBehaviour
     //消滅位置
     private float deadLine = -10;
 
-    //地面の位置
-    private float groundLevel = -3.0f;
-
-    //キューブのPrefab
-    public GameObject cubePrefab;
-
 
     // Start is called before the first frame update
     void Start()
@@ -26,19 +20,6 @@ public class CubeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.y == groundLevel)
-        {
-            GetComponent<AudioSource>().volume = 0;
-        }
-
-        void OnCollisionEnter2D(Collider2D collision)
-        {
-            if(collision.gameObject.name == "cubePrefab")
-            {
-                GetComponent<AudioSource>().volume = 1;
-            }
-        }
-        
         //キューブを移動させる
         transform.Translate(this.speed * Time.deltaTime, 0, 0);
 
@@ -49,12 +30,16 @@ public class CubeController : MonoBehaviour
 
         }
     }
-    void OnCollisionEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.gameObject.name == "UnityChan2D")
+        if (collision.gameObject.tag == "CubeTag" || collision.gameObject.tag == "GroundTag")
+        {
+            GetComponent<AudioSource>().Play();
+        }
+
+        if (collision.gameObject.name == "UnityChan2D")
         {
             GetComponent<AudioSource>().volume = 0;
         }
-
     }
 }
